@@ -9,6 +9,16 @@ const game = new Game();
 // отрисовка
 const container = document.querySelector('.container');
 
+const colors = {
+    J: 'FireBrick',
+    I: 'CadetBlue',
+    O: 'Gold',
+    L: 'StateBlue',
+    2: 'RoyalBlue',
+    T: 'Indigo',
+    S: 'Pink',
+};
+
 const canvas = document.createElement('canvas');
 canvas.classList.add('game-area');
 container.append(canvas);
@@ -27,7 +37,7 @@ const showArea = (area) => {
         for (let x = 0; x < line.length; x++) {
             const block = line[x];
             if (block !== 'o') {
-                context.fillStyle = 'pink';
+                context.fillStyle = colors[block];
                 context.strokeStyle = 'white';
                 context.fillRect(x*SIZE_BLOCK, y*SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
                 context.strokeRect(x*SIZE_BLOCK, y*SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
