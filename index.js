@@ -175,30 +175,34 @@ const showArea = (area) => {
 
 }
 
+let isStarting = false;
+
 window.addEventListener('keydown', (event) => {
     const key = event.code;
     
-    switch (key) {
-        case 'ArrowLeft':
-            game.moveLeft();
-            showArea(game.viewArea);
-            break;
-            
-        case 'ArrowRight':
-            game.moveRight();
-            showArea(game.viewArea);
-            break;
-        case 'ArrowDown':
-            game.moveDowm();
-            showArea(game.viewArea);
-            break;
-        case 'ArrowUp':
-            game.rotateTetromino();
-            showArea(game.viewArea);
-            break;
-        default: break;
+    if (key === 'Enter') isStarting = true;
+    if (isStarting) {
+        switch (key) {
+            case 'ArrowLeft':
+                game.moveLeft();
+                showArea(game.viewArea);
+                break;
+                
+            case 'ArrowRight':
+                game.moveRight();
+                showArea(game.viewArea);
+                break;
+            case 'ArrowDown':
+                game.moveDowm();
+                showArea(game.viewArea);
+                break;
+            case 'ArrowUp':
+                game.rotateTetromino();
+                showArea(game.viewArea);
+                break;
+            default: break;
+        }
     }
-
 })
 
 showArea(game.viewArea);
