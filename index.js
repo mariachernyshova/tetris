@@ -20,7 +20,7 @@ const game = {
         ['o','o','o','o','o','o','o','o','o','o'],
         ['x','o','o','o','o','o','o','o','o','o'],
         ['x','o','o','o','o','o','o','o','o','o'],
-        ['x','x','o','o','o','o','o','o','o','x'],
+        ['x','o','o','o','o','o','o','o','o','x'],
         ['x','x','o','x','x','o','o','o','o','x'],
         ['x','x','x','x','x','o','o','o','x','x'],
     ],
@@ -137,7 +137,8 @@ const game = {
         for (let i = 0; i < tetromino.length; i++) {
             const row = tetromino[i];
             for (let j = 0; j < row.length; j++) {
-                this.area[y + i][x + j] = tetromino[i][j];
+                if (tetromino[i][j] !== 'o')
+                    this.area[y + i][x + j] = tetromino[i][j];
             }
         }
     }
@@ -179,7 +180,7 @@ let isStarting = false;
 
 window.addEventListener('keydown', (event) => {
     const key = event.code;
-    
+
     if (key === 'Enter') isStarting = true;
     if (isStarting) {
         switch (key) {
