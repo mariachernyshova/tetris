@@ -1,4 +1,4 @@
-// import { tetrominoes } from "./tetrominoes.js";
+import { tetrominoes } from "./tetrominoes.js";
 
 // механика игры
 export class Game {
@@ -25,39 +25,23 @@ export class Game {
         ['x','x','x','x','x','o','o','o','x','x'],
     ];
 
-    activeTetromino = {
-        x: 3,
-        y: 0,
-        block: [
-            ['o','x','o'],
-            ['o','x','o'],
-            ['x','x','o'],
-        ],
-        rotationIndex: 0,
-        rotation: [
-            [
-                ['o','x','o'],
-                ['o','x','o'],
-                ['x','x','o'],
-            ],
-            [
-                ['x','o','o'],
-                ['x','x','x'],
-                ['o','o','o'],
-            ],
-            
-            [
-                ['o','x','x'],
-                ['o','x','o'],
-                ['o','x','o'],
-            ],
-            [
-                ['o','o','o'],
-                ['x','x','x'],
-                ['o','o','x'],
-            ]
-        ]
-    };
+    activeTetromino = this.createTetromino();
+
+    createTetromino() {
+        const keys = Object.keys(tetrominoes);
+        const letterTetromino = keys[Math.floor(Math.random() * keys.length)];
+        const rotation = tetrominoes[letterTetromino];
+        const rotationIndex = Math.floor(Math.random() * 4);
+        const block = rotation[rotationIndex];
+
+        return {
+            x: 3,
+            y: 0,
+            block, //текущий блок по индексу
+            rotationIndex, //индекс положения блока
+            rotation, //все варианты расположения текущего блока
+        }
+    }
 
     moveLeft() {
         if (this.checkOutPosition(this.activeTetromino.x - 1, this.activeTetromino.y)) {

@@ -1,10 +1,10 @@
 import { Game } from "./modules/game.js";
 
-
-const game = new Game();
 const SIZE_BLOCK = 30;
 const COLUMNS = 10;
 const ROWS = 20;
+
+const game = new Game();
 
 // отрисовка
 const container = document.querySelector('.container');
