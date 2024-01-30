@@ -27,6 +27,8 @@ export class Game {
 
     activeTetromino = this.createTetromino();
 
+    nextTetromino = this.createTetromino();
+
     createTetromino() {
         const keys = Object.keys(tetrominoes);
         const letterTetromino = keys[Math.floor(Math.random() * keys.length)];
@@ -41,6 +43,11 @@ export class Game {
             rotationIndex, //индекс положения блока
             rotation, //все варианты расположения текущего блока
         }
+    }
+
+    changeTetromino() {
+        this.activeTetromino = this.nextTetromino;
+        this.nextTetromino = this.createTetromino();
     }
 
     moveLeft() {
@@ -125,5 +132,7 @@ export class Game {
                     this.area[y + i][x + j] = row[j];
             }
         }
+
+        this.changeTetromino();
     }
 }
