@@ -1,5 +1,5 @@
 import { tetrominoes } from "./tetrominoes.js";
-
+import { ROWS, COLUMNS } from "../index.js";
 // механика игры
 export class Game {
     area = [
@@ -134,5 +134,29 @@ export class Game {
         }
 
         this.changeTetromino();
+        this.clearRow();
+    }
+
+    clearRow() {
+        const rows = [];
+
+        for (let i = ROWS - 1; i >= 0; i--) {
+            let countBlock = 0;
+            for (let j = 0; j < COLUMNS; j++) {
+                if (this.area[i][j] !== 'o') {
+                    countBlock += 1;
+                }
+            }
+
+            if (!countBlock) break;
+            if (countBlock == COLUMNS) {
+                rows.unshift(i); // добавляем в начало, так как удалять будем сверху вниз
+            }
+        }
+
+        rows.forEach(i => {
+            this.area.splice(i, 1);
+            this.area.unshift(Array(COLUMNS).fill('o'));
+        });
     }
 }

@@ -1,8 +1,8 @@
 import { Game } from "./modules/game.js";
 
+export const COLUMNS = 10;
+export const ROWS = 20;
 const SIZE_BLOCK = 30;
-const COLUMNS = 10;
-const ROWS = 20;
 
 const game = new Game();
 
@@ -13,7 +13,7 @@ const colors = {
     J: 'FireBrick',
     I: 'CadetBlue',
     O: 'Gold',
-    L: 'StateBlue',
+    L: 'SlateBlue',
     2: 'RoyalBlue',
     T: 'Indigo',
     S: 'Pink',
