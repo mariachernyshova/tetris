@@ -3,6 +3,7 @@ import { COLUMNS, ROWS, SIZE_BLOCK } from "../index.js";
 export class View {
     constructor(container) {
         this.container = container;
+        this.preview();
     }
 
     colors = {
@@ -14,17 +15,32 @@ export class View {
         T: 'Indigo',
         S: 'Pink',
     };
-    
     canvas = document.createElement('canvas');
+    context = this.canvas.getContext('2d');
+
+    preview() {
+        this.container.textContent = '';
+        const preview =  document.createElement('div');
+        preview.innerHTML = "Press ENTER to start";
+        preview.style.cssText = `
+            border: 3px solid black;
+            font-size: 18px;
+            text-align: center;
+            padding: 50px;
+            grid-column: 1 / 3;
+        `;
+
+        this.container.append(preview);
+    }
 
     init() {
+        this.container.textContent = '';
+        this.canvas.style.gridArea = 'game';
         this.canvas.classList.add('game-area');
         this.container.append(this.canvas);
         this.canvas.width = SIZE_BLOCK * COLUMNS;
         this.canvas.height = SIZE_BLOCK * ROWS;
     }
-    
-    context = this.canvas.getContext('2d');
     
     showArea(area) {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
