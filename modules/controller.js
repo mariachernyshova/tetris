@@ -26,7 +26,10 @@ export class Controller {
             const time = (1100 - 100 * this.game.level);
             if (this.game.gameOver) return;
             setTimeout(() => {
-                this.game.moveDown();
+                if (!this.game.pause) {
+                    this.game.moveDown();
+                }
+                
                 this.view.showArea(this.game.viewArea);
                 tick();
             }, time > 100 ? time : 100);
@@ -36,7 +39,9 @@ export class Controller {
 
         window.addEventListener('keydown', (event) => {
             const key = event.code;
+            if (key === 'ShiftRight') this.game.pause = !this.game.pause;
 
+            if (this.game.pause) return;
             switch (key) {
                 case 'ArrowLeft':
                     this.game.moveLeft();
@@ -49,6 +54,10 @@ export class Controller {
                     break;
                 case 'ArrowDown':
                     this.game.moveDown();
+                    this.view.showArea(this.game.viewArea);
+                    break;
+                case 'ArrowUp':
+                    this.game.rotateTetramino();
                     this.view.showArea(this.game.viewArea);
                     break;
                 case 'ArrowUp':
