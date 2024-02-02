@@ -1,4 +1,4 @@
-export const tetrominoes = {
+export const tetraminoes = {
   J: [
     [
       ['o', 'o', 'o'],
