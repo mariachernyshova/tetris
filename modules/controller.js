@@ -18,6 +18,11 @@ export class Controller {
     start() {
         this.view.showArea(this.game.viewArea);
 
+        setInterval(() => {
+            this.game.moveDowm();
+            this.view.showArea(this.game.viewArea);
+        }, 500);
+
         window.addEventListener('keydown', (event) => {
             const key = event.code;
 
