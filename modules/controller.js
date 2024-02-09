@@ -7,12 +7,14 @@ export class Controller {
     }
 
     init(codeKey) {
-        window.addEventListener('keydown', (event) => {
+        const handler = (event) => {
             if (event.code === codeKey) {
                 this.view.init();
                 this.start();
+                window.removeEventListener('keydown', handler);
             }
-        })
+        };
+        window.addEventListener('keydown', handler);
     }
 
     start() {
