@@ -60,10 +60,6 @@ export class Controller {
                     this.game.rotateTetramino();
                     this.view.showArea(this.game.viewArea);
                     break;
-                case 'ArrowUp':
-                    this.game.rotateTetramino();
-                    this.view.showArea(this.game.viewArea);
-                    break;
                 default: break;
             }
         })
