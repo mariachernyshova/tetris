@@ -9,9 +9,9 @@ export class View {
     colors = {
         J: 'FireBrick', // todo заменить цвета
         I: 'CadetBlue',
-        O: 'Gold',
-        L: 'SlateBlue',
-        2: 'RoyalBlue',
+        O: '#e18d41',
+        L: '#7d1356',
+        2: '#134a7d',
         T: 'Indigo',
         S: 'Pink',
     };
