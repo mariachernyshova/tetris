@@ -125,7 +125,7 @@ export class View {
                     context.fillRect(x*SIZE_BLOCK, y*SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
                     context.strokeRect(x*SIZE_BLOCK, y*SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
                 } else {
-                    context.strokeStyle = 'grey';
+                    context.strokeStyle = '#9191911c';
                     context.strokeRect(x*SIZE_BLOCK, y*SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
                 }
             }
