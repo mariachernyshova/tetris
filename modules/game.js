@@ -6,6 +6,7 @@ export class Game {
     lines = 0;
     level = 1;
     record = localStorage.getItem('tetris-record') || 0;
+    viewSizeTetromino = 0;
 
     points = [0, 100, 300, 700, 1500];
 
@@ -57,6 +58,7 @@ export class Game {
 
     changeTetramino() {
         this.activeTetramino = this.nextTetramino;
+        this.viewSizeTetromino = 0;
         this.nextTetramino = this.createTetramino();
     }
 
@@ -75,7 +77,9 @@ export class Game {
     moveDown() {
         if (this.gameOver) return;
         if (this.checkOutPosition(this.activeTetramino.x, this.activeTetramino.y + 1)) {
-            this.activeTetramino.y += 1;
+            if (this.viewSizeTetromino != this.activeTetramino.block.length)
+                console.log('this.activeTetramino.block.lengt: ', this.activeTetramino.block.length);
+            else this.activeTetramino.y += 1;
         } else {
             this.stopMove();
         }
@@ -100,13 +104,42 @@ export class Game {
     get viewArea() {
         const area = JSON.parse(JSON.stringify(this.area));
         const {x, y, block: tetramino} = this.activeTetramino;
+        const cutBlock = []; //временный блок, пока viewSizeTetromino != tetramino.length
 
-        for (let i = 0; i < tetramino.length; i++) {
-            const row = tetramino[i];
+        if (this.viewSizeTetromino != tetramino.length) {
+            this.viewSizeTetromino++;
 
-            for (let j = 0; j < row.length; j++) {
-                if (row[j] !== 'o') {
-                    area[y + i][x + j] = tetramino[i][j];
+            // Loop to initialize 2D array elements.
+            for (let i = 0; i < this.viewSizeTetromino; i++) {
+                cutBlock[i] = [];
+                for (let j = 0; j < tetramino[i].length; j++) {
+                    cutBlock[i][j] = tetramino[tetramino[i].length - this.viewSizeTetromino + i][j];
+                }
+            }
+            console.log(cutBlock);
+
+            // for (let i = tetramino.length - this.viewSizeTetromino; i < tetramino.length; i++) {
+            for (let i = 0; i < cutBlock.length; i++) {
+                // console.log('tetramino.length - this.viewSizeTetromino: ', tetramino.length - this.viewSizeTetromino);
+                // const row = tetramino[i];
+                const row = cutBlock[i];
+
+                for (let j = 0; j < row.length; j++) {
+                    if (row[j] !== 'o') {
+                        // area[y + i][x + j] = tetramino[i][j];
+                        area[y + i][x + j] = cutBlock[i][j];
+                    }
+                }
+            }
+
+        } else {
+            for (let i = 0; i < tetramino.length; i++) {
+                const row = tetramino[i];
+
+                for (let j = 0; j < row.length; j++) {
+                    if (row[j] !== 'o') {
+                        area[y + i][x + j] = tetramino[i][j];
+                    }
                 }
             }
         }
