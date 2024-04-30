@@ -6,9 +6,11 @@ export class Game {
     lines = 0;
     level = 1;
     record = localStorage.getItem('tetris-record') || 0;
+    viewSizeTetromino = 0;
 
     points = [0, 100, 300, 700, 1500];
 
+    //todo create game over modal
     gameOver = false;
     pause = false;
 
@@ -36,7 +38,6 @@ export class Game {
     ];
 
     activeTetramino = this.createTetramino();
-
     nextTetramino = this.createTetramino();
 
     createTetramino() {
@@ -45,10 +46,12 @@ export class Game {
         const rotation = tetraminoes[letterTetramino];
         const rotationIndex = Math.floor(Math.random() * 4);
         const block = rotation[rotationIndex];
+        const visibleBlock = [];
 
         return {
             x: 3,
             y: 0,
+            visibleBlock, //текущий блок отображаемый
             block, //текущий блок по индексу
             rotationIndex, //индекс положения блока
             rotation, //все варианты расположения текущего блока
@@ -56,17 +59,21 @@ export class Game {
     }
 
     changeTetramino() {
+        if (this.gameOver) return;
         this.activeTetramino = this.nextTetramino;
+        this.viewSizeTetromino = 0;
         this.nextTetramino = this.createTetramino();
     }
 
     moveLeft() {
+        if (this.gameOver) return;
         if (this.checkOutPosition(this.activeTetramino.x - 1, this.activeTetramino.y)) {
             this.activeTetramino.x -= 1;
         }
     }
 
     moveRight() {
+        if (this.gameOver) return;
         if (this.checkOutPosition(this.activeTetramino.x + 1, this.activeTetramino.y)) {
             this.activeTetramino.x += 1;
         }
@@ -75,7 +82,8 @@ export class Game {
     moveDown() {
         if (this.gameOver) return;
         if (this.checkOutPosition(this.activeTetramino.x, this.activeTetramino.y + 1)) {
-            this.activeTetramino.y += 1;
+            if (this.viewSizeTetromino == this.activeTetramino.block.length)
+                this.activeTetramino.y += 1;
         } else {
             this.stopMove();
         }
@@ -97,16 +105,65 @@ export class Game {
         }
     }
 
+    cutBlock(size, tetramino) {
+        const cutBlock = [];
+
+        // Loop to initialize 2D array elements.
+        for (let i = 0; i < size; i++) {
+            cutBlock[i] = [];
+            for (let j = 0; j < tetramino[i].length; j++) {
+                cutBlock[i][j] = tetramino[tetramino[i].length - size + i][j];
+            }
+        }
+        // console.log('cutBlock: ', cutBlock);
+
+        return cutBlock;
+    }
+
+    returnValidBlock(size, tetramino) {
+        let validBlock = false;
+        let currSize = size;
+        let cutBlock = [];
+        while (!validBlock) {
+            cutBlock = this.cutBlock(currSize, tetramino);
+
+            for (let i = 0; i < cutBlock.length; i++) {
+                const row = cutBlock[i];
+    
+                for (let j = 0; j < row.length; j++) {
+                    if (row[j] !== 'o') {
+                        validBlock = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!validBlock) currSize++;
+        }
+
+        return cutBlock;
+    }
+
     get viewArea() {
         const area = JSON.parse(JSON.stringify(this.area));
         const {x, y, block: tetramino} = this.activeTetramino;
 
-        for (let i = 0; i < tetramino.length; i++) {
-            const row = tetramino[i];
+        if (this.gameOver) return area;
+
+        if (this.viewSizeTetromino != tetramino.length) {
+            this.viewSizeTetromino++;
+            this.activeTetramino.visibleBlock = this.cutBlock(this.viewSizeTetromino, tetramino);
+            // console.log('this.activeTetramino.visibleBlock: ', this.activeTetramino.visibleBlock);
+        } else {
+            this.activeTetramino.visibleBlock = tetramino;
+        }
+
+        for (let i = 0; i < this.activeTetramino.visibleBlock.length; i++) {
+            const row = this.activeTetramino.visibleBlock[i];
 
             for (let j = 0; j < row.length; j++) {
                 if (row[j] !== 'o') {
-                    area[y + i][x + j] = tetramino[i][j];
+                    area[y + i][x + j] = this.activeTetramino.visibleBlock[i][j];
                 }
             }
         }
@@ -114,8 +171,13 @@ export class Game {
         return area;
     }
 
-    checkOutPosition(x, y) {
-        const tetramino = this.activeTetramino.block;
+    checkOutPosition(x, y, tetramino = null) {
+        if (tetramino == null) {
+            tetramino = this.activeTetramino.visibleBlock;
+        }
+        // console.log('checkOutPosition tetramino: ', tetramino);
+        // console.log('checkOutPosition this.area: ', this.area);
+
         for (let i = 0; i < tetramino.length; i++) {
             const row = tetramino[i];
             for (let j = 0; j < row.length; j++) {
@@ -125,6 +187,8 @@ export class Game {
                     || !this.area[y + i][x + j] 
                     || this.area[y + i][x + j] !== 'o'
                 ) {
+                    if (this.area[y + i] >= 0 && this.area[y + i] <= 1)
+                        this.gameOver = true;
                     return false;
                 }
             }
@@ -134,7 +198,8 @@ export class Game {
     }
 
     stopMove() {
-        const {x, y, block: tetramino} = this.activeTetramino;
+        const {x, y, visibleBlock: tetramino} = this.activeTetramino;
+        // console.log('tetramino stopMove: ', tetramino);
 
         for (let i = 0; i < tetramino.length; i++) {
             const row = tetramino[i];
@@ -143,12 +208,21 @@ export class Game {
                     this.area[y + i][x + j] = row[j];
             }
         }
+        
+        if (this.activeTetramino.block.length != this.viewSizeTetromino) {
+            this.gameOver = true;
+            // console.log('this.gameOver: ', this.gameOver);
+            return;
+        }
 
         this.changeTetramino();
         const countRow = this.clearRow();
         this.calcScore(countRow);
         this.updatePanels();
-        this.gameOver = !this.checkOutPosition(this.activeTetramino.x, this.activeTetramino.y);
+        this.gameOver = !this.checkOutPosition(this.activeTetramino.x, this.activeTetramino.y, this.returnValidBlock(1, this.activeTetramino.block));
+        if (this.gameOver) {
+            // console.log('this.gameOver: ', this.gameOver);
+        }
     }
 
     clearRow() {
