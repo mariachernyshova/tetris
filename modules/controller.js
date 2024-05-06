@@ -22,6 +22,8 @@ export class Controller {
 
         const showScore = this.view.createBlockScore();
         const showNextTetramino = this.view.createBlockNextTetramino();
+
+        const showHint = this.view.createHintPanel();
         this.game.createUpdatePanels(showScore, showNextTetramino);
 
         const tick = () => {
