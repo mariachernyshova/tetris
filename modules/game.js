@@ -138,7 +138,10 @@ export class Game {
                 }
             }
 
-            if (!validBlock) currSize++;
+            if (!validBlock) {
+                this.viewSizeTetromino++;
+                currSize++;
+            } 
         }
 
         return cutBlock;
@@ -152,7 +155,7 @@ export class Game {
 
         if (this.viewSizeTetromino != tetramino.length) {
             this.viewSizeTetromino++;
-            this.activeTetramino.visibleBlock = this.cutBlock(this.viewSizeTetromino, tetramino);
+            this.activeTetramino.visibleBlock = this.returnValidBlock(this.viewSizeTetromino, tetramino);
             // console.log('this.activeTetramino.visibleBlock: ', this.activeTetramino.visibleBlock);
         } else {
             this.activeTetramino.visibleBlock = tetramino;
