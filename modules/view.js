@@ -112,7 +112,6 @@ export class View {
 
     createHintPanel() {
         const hintPanel = document.createElement('div');
-        // const preview =  document.createElement('div');
         hintPanel.innerHTML = "Press <p><b>Right Shift</b></p> to pause";
         hintPanel.style.cssText = `
             border: 2px solid black;
@@ -123,22 +122,6 @@ export class View {
         `;
 
         this.container.append(hintPanel);
-
-
-        // const linesElem = document.createElement('p');
-        // const scoreElem = document.createElement('p');
-        // const levelElem = document.createElement('p');
-        // const recordElem = document.createElement('p');
-
-        // scoreBlock.append(linesElem, scoreElem, levelElem, recordElem);
-
-
-        // return (lines, score, level, record) => {
-        //     linesElem.textContent = `lines: ${lines}`;
-        //     scoreElem.textContent = `score: ${score}`;
-        //     levelElem.textContent = `level: ${level}`;
-        //     recordElem.textContent = `record: ${record}`;
-        // }
     }
     
     showArea(area) {
