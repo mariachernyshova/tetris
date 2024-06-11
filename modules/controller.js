@@ -28,7 +28,10 @@ export class Controller {
 
         const tick = () => {
             const time = (1100 - 100 * this.game.level);
-            if (this.game.gameOver) return;
+            if (this.game.gameOver) {
+                this.view.showEndGameModal();
+                return
+            }
             setTimeout(() => {
                 if (!this.game.pause) {
                     this.game.moveDown();
@@ -54,6 +57,9 @@ export class Controller {
             }
 
             if (this.game.pause) return;
+            if (this.game.gameOver) {
+                this.view.showEndGameModal();
+            }
             switch (key) {
                 case 'ArrowLeft':
                     this.game.moveLeft();
