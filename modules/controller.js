@@ -43,7 +43,15 @@ export class Controller {
 
         window.addEventListener('keydown', (event) => {
             const key = event.code;
-            if (key === 'ShiftRight') this.game.pause = !this.game.pause;
+            if (key === 'ShiftRight') {
+                this.game.pause = !this.game.pause;
+
+                if (this.game.pause) {
+                    this.view.showPauseModal();
+                } else {
+                    this.view.closeModal();
+                }
+            }
 
             if (this.game.pause) return;
             switch (key) {

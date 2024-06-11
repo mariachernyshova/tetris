@@ -108,14 +108,12 @@ export class Game {
     cutBlock(size, tetramino) {
         const cutBlock = [];
 
-        // Loop to initialize 2D array elements.
         for (let i = 0; i < size; i++) {
             cutBlock[i] = [];
             for (let j = 0; j < tetramino[i].length; j++) {
                 cutBlock[i][j] = tetramino[tetramino[i].length - size + i][j];
             }
         }
-        // console.log('cutBlock: ', cutBlock);
 
         return cutBlock;
     }
@@ -156,7 +154,6 @@ export class Game {
         if (this.viewSizeTetromino != tetramino.length) {
             this.viewSizeTetromino++;
             this.activeTetramino.visibleBlock = this.returnValidBlock(this.viewSizeTetromino, tetramino);
-            // console.log('this.activeTetramino.visibleBlock: ', this.activeTetramino.visibleBlock);
         } else {
             this.activeTetramino.visibleBlock = tetramino;
         }
@@ -178,8 +175,6 @@ export class Game {
         if (tetramino == null) {
             tetramino = this.activeTetramino.visibleBlock;
         }
-        // console.log('checkOutPosition tetramino: ', tetramino);
-        // console.log('checkOutPosition this.area: ', this.area);
 
         for (let i = 0; i < tetramino.length; i++) {
             const row = tetramino[i];

@@ -123,6 +123,24 @@ export class View {
 
         this.container.append(hintPanel);
     }
+
+    showPauseModal() {
+        const popupBg = document.querySelector('.popup__bg');
+        popupBg.classList.add('active');
+
+
+        const pauseModal =  document.createElement('div');
+        pauseModal.className = 'popup active';
+        pauseModal.innerHTML = "Press RIGHT SHIFT to continue";
+
+        popupBg.append(pauseModal);
+    }
+
+    closeModal() {
+        const popupBg = document.querySelector('.popup__bg');
+        popupBg.innerHTML = '';
+        popupBg.classList.remove('active');
+    }
     
     showArea(area) {
         const context = this.canvas.getContext('2d');

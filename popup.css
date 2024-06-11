@@ -1,0 +1,36 @@
+.popup__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: 0.5s all;
+}
+
+.popup__bg.active { 
+    opacity: 1;
+    transition: 0.5s all;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    background: #fff;
+    width: 400px;
+    padding: 25px;
+    transition: 0.5s all;
+
+    border: 3px solid black;
+    font-size: 18px;
+    text-align: center;
+    padding: 50px;
+}
+
+.popup.active {
+    transform: translate(-50%, -50%) scale(1);
+    transition: 0.5s all;
+}
