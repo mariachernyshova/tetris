@@ -125,24 +125,20 @@ export class View {
     }
 
     showPauseModal() {
-        const popupBg = document.querySelector('.popup__bg');
-        popupBg.classList.add('active');
-
-        const pauseModal =  document.createElement('div');
-        pauseModal.className = 'popup active';
-        pauseModal.innerHTML = "Press RIGHT SHIFT to continue";
-
-        popupBg.append(pauseModal);
+        this.createModal(`Press RIGHT SHIFT to continue`);
     }
 
     showEndGameModal() {
+        this.createModal(`<p>GAME OVER :(</p> `);
+    }
+
+    createModal(textMessageHTML) {
         const popupBg = document.querySelector('.popup__bg');
         popupBg.classList.add('active');
 
         const endGameModal =  document.createElement('div');
         endGameModal.className = 'popup active';
-        endGameModal.innerHTML = `<p>GAME OVER :(</p> 
-        `;
+        endGameModal.innerHTML = textMessageHTML;
 
         popupBg.append(endGameModal);
     }
